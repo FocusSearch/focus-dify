@@ -1,0 +1,43 @@
+identity:
+  author: shaojk
+  name: focus-dify
+  label:
+    en_US: focus-dify
+    zh_Hans: focus-dify
+    pt_BR: focus-dify
+  description:
+    en_US: FocusGPT dify plugin
+    zh_Hans: FocusGPT dify plugin
+    pt_BR: FocusGPT dify plugin
+  icon: icon.svg
+  tags:
+    - search
+credentials_for_provider: #添加 credentials_for_provider 字段
+  datafocus_host:
+    type: text-input
+    required: true
+    default: "https://test-dev.datafocus.ai"
+    label:
+      en_US: Datafocus host
+      zh_Hans: Datafocus host
+    placeholder:
+      en_US: Please input your datafocus host url
+      zh_Hans: 请输入你的Datafocus应用地址
+  app_token:
+    type: secret-input
+    required: true
+    label:
+      en_US: Datafocus APP Token
+      zh_Hans: Datafocus APP Token
+    placeholder:
+      en_US: Please input your APP Token
+      zh_Hans: 请输入你的 APP Token
+    help:
+      en_US: Get your APP token from Datafocus
+      zh_Hans: 从 Datafocus 获取您的 APP Token
+    url: https://www.datafocus.ai/
+tools:
+  - tools/focus-dify.yaml
+extra:
+  python:
+    source: provider/focus_dify.py

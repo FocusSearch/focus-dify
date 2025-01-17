@@ -1,0 +1,43 @@
+identity:
+  name: focus-dify
+  author: shaojk
+  label:
+    en_US: focus-dify
+    zh_Hans: focus-dify
+    pt_BR: focus-dify
+description:
+  human:
+    en_US: FocusGPT dify plugin
+    zh_Hans: FocusGPT dify plugin
+    pt_BR: FocusGPT dify plugin
+  llm: FocusGPT dify plugin
+parameters:
+  - name: query
+    type: string
+    required: true
+    label:
+      en_US: Query string
+      zh_Hans: 查询语句
+      pt_BR: Query string
+    human_description:
+      en_US: FocusGPT dify plugin
+      zh_Hans: FocusGPT dify plugin
+      pt_BR: FocusGPT dify plugin
+    llm_description: FocusGPT dify plugin
+    form: llm
+  - name: action
+    type: select
+    required: true
+    label:
+      en_US: action
+      zh_Hans: 执行行为
+      pt_BR: action
+    human_description:
+      en_US: FocusGPT dify plugin
+      zh_Hans: FocusGPT dify plugin
+      pt_BR: FocusGPT dify plugin
+    llm_description: FocusGPT dify plugin
+    form: llm
+extra:
+  python:
+    source: tools/focus_dify.py
