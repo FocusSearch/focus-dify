@@ -1,1 +1,2 @@
 dify_plugin
+requests~=2.32.3

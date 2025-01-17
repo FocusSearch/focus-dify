@@ -4,11 +4,9 @@ identity:
   label:
     en_US: focus-dify
     zh_Hans: focus-dify
-    pt_BR: focus-dify
   description:
     en_US: FocusGPT dify plugin
     zh_Hans: FocusGPT dify plugin
-    pt_BR: FocusGPT dify plugin
   icon: icon.svg
   tags:
     - search
@@ -16,7 +14,7 @@ credentials_for_provider: #添加 credentials_for_provider 字段
   datafocus_host:
     type: text-input
     required: true
-    default: "https://test-dev.datafocus.ai"
+    default: "http://192.168.0.120:31600"
     label:
       en_US: Datafocus host
       zh_Hans: Datafocus host

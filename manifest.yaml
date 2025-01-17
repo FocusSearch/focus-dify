@@ -40,3 +40,5 @@ meta:
 created_at: 2025-01-14T10:41:30.9355822+08:00
 privacy: PRIVACY.md
 verified: false
+endpoints:
+  - endpoints/test.yaml
