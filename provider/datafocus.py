@@ -1,8 +1,10 @@
+import traceback
 from typing import Any
 
 from dify_plugin import ToolProvider
 from dify_plugin.errors.tool import ToolProviderCredentialValidationError
-from tools.focus_dify import FocusDifyTool
+
+from tools.focus_base import FocusBaseTool
 
 
 class FocusDifyProvider(ToolProvider):
@@ -11,10 +13,11 @@ class FocusDifyProvider(ToolProvider):
             """
             IMPLEMENT YOUR VALIDATION HERE
             """
-            for _ in FocusDifyTool.from_credentials(credentials).invoke(
-                tool_parameters={"query": "test"},
+            for _ in FocusBaseTool.from_credentials(credentials).invoke(
+                tool_parameters={"action": "listTables"},
             ):
                 pass
 
         except Exception as e:
+            print(traceback.print_exc())
             raise ToolProviderCredentialValidationError(str(e))

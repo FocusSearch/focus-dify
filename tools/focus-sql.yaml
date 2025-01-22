@@ -1,36 +1,101 @@
 identity:
-  name: focus-dify
   author: shaojk
+  name: focus-sql
   label:
-    en_US: focus-dify
-    zh_Hans: focus-dify
+    en_US: FocusSQL
+    zh_Hans: FocusSQL
 description:
   human:
-    en_US: FocusGPT dify plugin
-    zh_Hans: FocusGPT dify plugin
-  llm: FocusGPT dify plugin
+    en_US: A natural language to SQL plugin based on FocusSearch keyword parsing, more accurate, faster, and cheaper!
+    zh_Hans: DataFocus旗下支持多轮对话的智能问数插件，提供即插即用的ChatBI能力
+  llm: 一款基于FocusSearch关键词解析的自然语言转SQL插件，更准，更快，更便宜！
 parameters:
+  - name: language
+    type: select
+    required: false
+    label:
+      en_US: Language
+      zh_Hans: 语言环境
+    human_description:
+      en_US: Language environment
+      zh_Hans: 语言环境
+    llm_description: Language environment
+    form: llm
+    default: chinese
+    options:
+      - value: chinese
+        label:
+          en_US: Chinese
+          zh_Hans: 中文
+      - value: english
+        label:
+          en_US: English
+          zh_Hans: 英文
   - name: query
     type: string
     required: false
     label:
-      en_US: Query string
+      en_US: Query Statement
       zh_Hans: 查询语句
     human_description:
-      en_US: FocusGPT dify plugin
-      zh_Hans: FocusGPT dify plugin
-    llm_description: FocusGPT dify plugin
+      en_US: Natural language input
+      zh_Hans: 输入的自然语言
+    llm_description: Natural language input
     form: llm
   - name: tableName
     type: string
     required: false
     label:
-      en_US: table
-      zh_Hans: 数据表
+      en_US: Table Name
+      zh_Hans: 数据表名
     human_description:
-      en_US: Datafocus Table
-      zh_Hans: Datafocus数据表
-    llm_description: FocusGPT dify plugin
+      en_US: Select the name of the data table that you want to query
+      zh_Hans: 选择要查询的数据表名
+    llm_description: Select the name of the data table that you want to query
+    form: llm
+  - name: model
+    type: string
+    required: false
+    label:
+      en_US: Data Model
+      zh_Hans: 数据模型
+    human_description:
+      en_US: The JSON string of the queried table model
+      zh_Hans: 查询的表模型的json字符串
+    llm_description: The JSON string of the queried table model
+    form: llm
+  - name: outputSqlType
+    type: select
+    required: false
+    label:
+      en_US: Output SQL Type
+      zh_Hans: 输出SQL类型
+    human_description:
+      en_US: The dialect type of SQL output by the model
+      zh_Hans: 模型输出SQL的方言类型
+    llm_description: The dialect type of SQL output by the model
+    form: llm
+    default: mysql
+    options:
+      - value: mysql
+        label:
+          en_US: MySQL
+      - value: clickhouse
+        label:
+          en_US: ClickHouse
+      - value: impala
+        label:
+          en_US: Impala
+  - name: conversation_id
+    type: string
+    required: false
+    label:
+      en_US: Conversation Id
+      zh_Hans: Conversation Id
+    human_description:
+      en_US: Session unique identifier, which is used by the plug-in to identify the current session and can be passed in sys.conversation_id
+      zh_Hans: 会话唯一标识，用于插件识别当前会话，可传入sys.conversation_id
+    llm_description: Session unique identifier, which is used by the plug-in to identify the current session and can be passed in sys.conversation_id
     form: llm
   - name: action
     type: select
@@ -42,16 +107,12 @@ parameters:
         label:
           en_US: get table list
           zh_Hans: 获取数据表列表
-      - value: init
-        label:
-          en_US: init context
-          zh_Hans: 初始化对话
       - value: chat
         label:
           en_US: chat and get data
           zh_Hans: 对话互动
     label:
-      en_US: action
+      en_US: Action
       zh_Hans: 执行行为
     human_description:
       en_US: Action performed by plugins
@@ -163,26 +224,6 @@ parameters:
         label:
           en_US: Iceberg
           zh_Hans: Iceberg
-  - name: name
-    type: string
-    required: false
-    form: form
-    label:
-      en_US: Datasource Name
-      zh_Hans: 数据源名称
-    human_description:
-      en_US: User defined data source name, which will be used to register the data source in the Datafocus environment.
-      zh_Hans: 用户自定义的数据源名，数据源将以该名称注册到Datafocus环境中。
-  - name: description
-    type: string
-    required: false
-    form: form
-    label:
-      en_US: Datasource Description
-      zh_Hans: 数据源描述
-    human_description:
-      en_US: Datasource Description
-      zh_Hans: 数据源描述
   - name: host
     type: string
     required: false
@@ -248,11 +289,11 @@ parameters:
     required: false
     form: form
     label:
-      en_US: Schema Name
-      zh_Hans: Schema Name
+      en_US: Schema
+      zh_Hans: Schema
     human_description:
       en_US: Schema Name
       zh_Hans: Schema Name
 extra:
   python:
-    source: tools/focus_dify.py
+    source: tools/focus_sql.py
