@@ -3,6 +3,7 @@
 # @Author  : ShaoJK
 # @File    : focus_base.py
 # @Remark  :
+import hashlib
 import json
 import uuid
 from collections.abc import Generator
@@ -13,6 +14,13 @@ from dify_plugin import Tool
 from dify_plugin.entities.tool import ToolInvokeMessage
 
 from tools.constants import Aggregation, DataType
+
+
+def md5(in_str: str) -> str:
+    in_str = str(in_str).encode("utf-8")
+    md5 = hashlib.md5()
+    md5.update(in_str)
+    return md5.hexdigest()
 
 
 class FocusAPIError(Exception):
@@ -50,14 +58,14 @@ class FocusBaseTool(Tool):
         self.tool_parameters = tool_parameters
         self.conversation_id = self.get_param("conversation_id", "")
         if self.__class__.__name__ == FocusBaseTool.__name__:
-            return self.list_table(tool_parameters)
+            return self.list_table()
 
-    def need_reinit(self, tbl_name=None, language=None):
+    def need_reinit(self, **kwargs) -> bool:
         """判断是否需要重新初始化"""
-        if not tbl_name or tbl_name != self.get_param("tableName"):
-            return True
-        if not language or language.lower() != self.get_param("language").lower():
-            return True
+        data = self.get_storage_info()
+        for key, value in kwargs.items():
+            if not value or value.lower() != data.get(key, ""):
+                return True
         return False
 
     def __get_storage(self, key, default=None):
@@ -105,9 +113,9 @@ class FocusBaseTool(Tool):
         self.__set_storage_key(self.storage_index, self.conversation_id)
         self.__set_storage_value(self.storage_index, json.dumps(data, ensure_ascii=False))
 
-    def list_table(self, tool_parameters: dict[str, Any]) -> Generator[ToolInvokeMessage]:
+    def list_table(self) -> Generator[ToolInvokeMessage]:
         """获取表列表"""
-        datasource = self.parse_datasource_config(tool_parameters)
+        datasource = self.parse_datasource_config()
         tbl_name = self.get_param("tableName", "")
         if datasource:
             response = self.post("/df/rest/datasource/tables", params={"name": tbl_name}, body=datasource)["data"]
@@ -131,18 +139,18 @@ class FocusBaseTool(Tool):
         else:
             raise ValueError("%s is necessary, if you assigned datasource type." % key.capitalize())
 
-    def parse_datasource_config(self, tool_parameters: dict[str, Any]) -> dict:
+    def parse_datasource_config(self) -> dict:
         db_type = self.get_param("type")
         if not db_type:
             return None
         name = self.get_param("name")
         if not name:
             name = "Dify-%s-%s" % (db_type, str(uuid.uuid4())[:8])
-        host = self.__check_datasource_param(tool_parameters, "host")
-        port = self.__check_datasource_param(tool_parameters, "port")
-        user = self.__check_datasource_param(tool_parameters, "user")
-        password = self.__check_datasource_param(tool_parameters, "password")
-        db = self.__check_datasource_param(tool_parameters, "db")
+        host = self.__check_datasource_param(self.tool_parameters, "host")
+        port = self.__check_datasource_param(self.tool_parameters, "port")
+        user = self.__check_datasource_param(self.tool_parameters, "user")
+        password = self.__check_datasource_param(self.tool_parameters, "password")
+        db = self.__check_datasource_param(self.tool_parameters, "db")
         return {
             "type": db_type,
             "name": name,
@@ -189,18 +197,18 @@ class FocusGPTTool(FocusBaseTool):
         super()._invoke(tool_parameters)
         action = self.get_param("action")
         if action == "listTables":
-            return self.list_table(tool_parameters)
+            return self.list_table()
         elif action == "chat":
-            return self.chat(tool_parameters)
+            return self.chat()
         else:
             raise ValueError("Unexpected action type: %s" % action)
 
-    def init(self, tool_parameters: dict[str, Any]) -> Generator[ToolInvokeMessage]:
+    def init(self) -> Generator[ToolInvokeMessage]:
         """初始化FocusGPT上下文"""
-        language = self.get_param("language", "chinese")
+        language = self.get_param("language", "chinese").lower()
         tbl_name = self.get_param("tableName", "")
-        datasource = self.parse_datasource_config(tool_parameters)
-        body = {"language": language.lower()}
+        datasource = self.parse_datasource_config()
+        body = {"language": language}
         if datasource:
             body["dataSource"] = datasource
         if tbl_name:
@@ -209,7 +217,7 @@ class FocusGPTTool(FocusBaseTool):
             raise KeyError("TableName cannot be empty.")
         response = self.post("/df/rest/gpt/init", body=body)
 
-        data = {"tblName": tbl_name, "language": language}
+        data = {"tableName": tbl_name, "language": language}
         if response["errCode"] == 0:
             self.chat_id = response["data"]
             data["chatId"] = self.chat_id
@@ -221,19 +229,27 @@ class FocusGPTTool(FocusBaseTool):
         else:
             raise ValueError("Unexpected errCode: %s" % response["errCode"])
 
-    def chat(self, tool_parameters: dict[str, Any]) -> Generator[ToolInvokeMessage]:
+    def need_reinit(self) -> bool:
+        storage_info = self.get_storage_info()
+        language = self.get_param("language", "chinese").lower()
+        tbl_name = self.get_param("tableName", "")
+        if not tbl_name or tbl_name != storage_info.get("tableName"):
+            return True
+        if not language or language != storage_info.get("language"):
+            return True
+        return False
+
+    def chat(self) -> Generator[ToolInvokeMessage]:
+        if self.need_reinit():
+            for output in self.init():
+                yield output
+        query = self.get_param("query")
         data = self.get_storage_info()
         self.chat_id = data.get("chatId")
-        tbl_name = data.get("tblName")
-        language = data.get("language")
-        query = self.get_param("query")
-        if self.need_reinit(tbl_name, language):
-            for output in self.init(tool_parameters):
-                yield output
         if self.chat_id and query:
             response = self.post("/df/rest/gpt/data", body={"input": query, "chatId": self.chat_id})
             if response["errCode"] == 1001:
-                for output in self.init(tool_parameters):
+                for output in self.init():
                     yield output
                 response = self.post("/df/rest/gpt/data", body={"input": query, "chatId": self.chat_id})
             yield self.create_json_message(response["data"]["content"])
@@ -248,32 +264,39 @@ class FocusSQLTool(FocusBaseTool):
         super()._invoke(tool_parameters)
         action = self.get_param("action")
         if action == "listTables":
-            return self.list_table(tool_parameters)
+            return self.list_table()
         elif action == "chat":
-            return self.chat(tool_parameters)
+            return self.chat()
         else:
             raise ValueError("Unexpected action type: %s" % action)
 
-    def init(self, tool_parameters: dict[str, Any]) -> Generator[ToolInvokeMessage]:
+    def init(self) -> Generator[ToolInvokeMessage]:
         """初始化FocusGPT上下文"""
-        language = self.get_param("language", "chinese")
-        tbl_name = self.get_param("tableName")
-        output_sql_type = self.get_param("outputSqlType", "mysql")
+        language = self.get_param("language", "chinese").lower()
+        tbl_name = self.get_param("tableName", "")
+        output_sql_type = self.get_param("outputSqlType", "mysql").lower()
         model = self.get_param("model")
-        datasource = self.parse_datasource_config(tool_parameters)
-        body = {"language": language.lower()}
+        datasource = self.parse_datasource_config()
+        body = {"language": language}
+        model_hash = ""
         if model:
-            body["model"] = model
+            model_hash = md5(model)
+            model = json.loads(model)
         else:
-            body["model"] = {
-                "type": output_sql_type.lower(),
+            model = {
+                "type": output_sql_type,
                 "version": "8.0",
                 "tables": [self.get_table_model(tbl_name, datasource)],
                 "relations": []
             }
+        body["model"] = model
         response = self.post("/df/rest/gpt/start", body=body)
-
-        data = {"tblName": tbl_name, "language": language}
+        data = {
+            "tableName": tbl_name,
+            "model": model_hash,
+            "language": language,
+            "outputSqlType": output_sql_type
+        }
         if response["errCode"] == 0:
             self.chat_id = response["data"]
             data["chatId"] = self.chat_id
@@ -283,19 +306,33 @@ class FocusSQLTool(FocusBaseTool):
             raise ValueError(
                 "Unexpected errCode: %s, with %s" % (response["errCode"], json.dumps(response, ensure_ascii=False)))
 
-    def chat(self, tool_parameters: dict[str, Any]) -> Generator[ToolInvokeMessage]:
+    def need_reinit(self) -> bool:
+        storage_info = self.get_storage_info()
+        tbl_name = self.get_param("tableName", "")
+        if tbl_name or tbl_name != storage_info.get("tableName"):
+            return True
+        language = self.get_param("language", "chinese").lower()
+        if language != storage_info.get("language"):
+            return True
+        outputSqlType = self.get_param("outputSqlType", "mysql").lower()
+        if outputSqlType != storage_info.get("outputSqlType"):
+            return True
+        model = self.get_param("model", "")
+        if model and md5(model) != storage_info.get("model"):
+            return True
+        return False
+
+    def chat(self) -> Generator[ToolInvokeMessage]:
+        if self.need_reinit():
+            for output in self.init():
+                yield output
+        query = self.get_param("query")
         data = self.get_storage_info()
         self.chat_id = data.get("chatId")
-        tbl_name = data.get("tblName")
-        language = data.get("language")
-        query = self.get_param("query")
-        if self.need_reinit(tbl_name, language):
-            for output in self.init(tool_parameters):
-                yield output
         if self.chat_id and query:
             response = self.post("/df/rest/gpt/chat", body={"input": query, "chatId": self.chat_id})
             if response["errCode"] == 1001:
-                for output in self.init(tool_parameters):
+                for output in self.init():
                     yield output
                 response = self.post("/df/rest/gpt/chat", body={"input": query, "chatId": self.chat_id})
             yield self.create_json_message(response["data"])
