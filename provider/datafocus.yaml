@@ -33,7 +33,7 @@ credentials_for_provider: #添加 credentials_for_provider 字段
     help:
       en_US: Get your APP token from DataFocus
       zh_Hans: 从 DataFocus 获取您的 APP Token
-    url: https://bbs.datafocus.ai/article/118.html
+    url: https://www.datafocus.ai/infos/data-focus-token?from=dify
 tools:
   - tools/focus-sql.yaml
   - tools/focus-gpt.yaml
