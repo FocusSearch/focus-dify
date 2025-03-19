@@ -523,7 +523,7 @@ model
 
 ### Consult
 
-[![](./_assets/discord.png)](https://discord.gg/BuVCj8a5)
+[![](./_assets/discord.png)](https://discord.gg/TUahEW2C)
 
-[DataFocus Discord](https://discord.gg/BuVCj8a5)
+[DataFocus Discord](https://discord.gg/TUahEW2C)
 
