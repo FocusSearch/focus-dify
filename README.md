@@ -1,59 +1,59 @@
-## <font style="color:rgb(16, 24, 40);">English</font>
-### <font style="color:rgb(16, 24, 40);">Overview</font>
-<font style="color:rgb(16, 24, 40);">DataFocus includes two tools, FocusSQL and FocusGPT. FocusSQL is the Hallucination controllable Text2SQL component，FocusGPT is the fast response ChatBI. </font>
+## English
+### Overview
+DataFocus includes two tools, FocusSQL and FocusGPT. FocusSQL is the Hallucination controllable Text2SQL component，FocusGPT is the fast response ChatBI. 
 
-# <font style="color:rgb(31, 35, 40);">There are already so many Text-to-SQL frameworks. Why do we still need another one?</font>
-<font style="color:rgb(31, 35, 40);">In simple terms, </font><font style="color:rgb(16, 24, 40);">FocusSQL</font><font style="color:rgb(31, 35, 40);"> adopts a two-step SQL generation solution, which enables control over the hallucinations of LLM and truly builds the trust of non-technical users in the generated SQL results.</font>
+### There are already so many Text-to-SQL frameworks. Why do we still need another one?
+In simple terms, FocusSQL adopts a two-step SQL generation solution, which enables control over the hallucinations of LLM and truly builds the trust of non-technical users in the generated SQL results.
 
-<font style="color:rgb(31, 35, 40);">Below is the comparison table between </font><font style="color:rgb(16, 24, 40);">FocusSQL</font><font style="color:rgb(31, 35, 40);"> and others:</font>
+Below is the comparison table between FocusSQL and others:
 
-#### <font style="color:rgb(31, 35, 40);">Comparison Analysis Table</font>
-<font style="color:rgb(31, 35, 40);">Here’s a side-by-side comparison of </font><font style="color:rgb(16, 24, 40);">DataFocus plugin</font><font style="color:rgb(31, 35, 40);"> with other LLM-based frameworks:</font>
+#### Comparison Analysis Table
+Here’s a side-by-side comparison of DataFocus plugin with other LLM-based frameworks:
 
-| **<font style="color:rgb(31, 35, 40);">Feature</font>** | **<font style="color:rgb(31, 35, 40);">Traditional LLM Frameworks</font>** | **<font style="color:rgb(16, 24, 40);">FocusSQL</font>** |
+| **Feature** | **Traditional LLM Frameworks** | **FocusSQL** |
 | --- | --- | --- |
-| <font style="color:rgb(31, 35, 40);">Generation Process</font> | <font style="color:rgb(31, 35, 40);">Black box, direct SQL generation</font> | <font style="color:rgb(31, 35, 40);">Transparent, two-step (keywords + SQL)</font> |
-| <font style="color:rgb(31, 35, 40);">Hallucination Risk</font> | <font style="color:rgb(31, 35, 40);">High, depends on model quality</font> | <font style="color:rgb(31, 35, 40);">Low, controllable (keyword verification)</font> |
-| <font style="color:rgb(31, 35, 40);">Speed</font> | <font style="color:rgb(31, 35, 40);">Slow, relies on large model inference</font> | <font style="color:rgb(31, 35, 40);">Fast, deterministic keyword-to-SQL</font> |
-| <font style="color:rgb(31, 35, 40);">Cost</font> | <font style="color:rgb(31, 35, 40);">High, requires advanced models</font> | <font style="color:rgb(31, 35, 40);">Low, reduces reliance on large models</font> |
-| <font style="color:rgb(31, 35, 40);">Non-Technical User Friendliness</font> | <font style="color:rgb(31, 35, 40);">Low, hard to verify results</font> | <font style="color:rgb(31, 35, 40);">High, easy keyword checking</font> |
+| Generation Process | Black box, direct SQL generation | Transparent, two-step (keywords + SQL) |
+| Hallucination Risk | High, depends on model quality | Low, controllable (keyword verification) |
+| Speed | Slow, relies on large model inference | Fast, deterministic keyword-to-SQL |
+| Cost | High, requires advanced models | Low, reduces reliance on large models |
+| Non-Technical User Friendliness | Low, hard to verify results | High, easy keyword checking |
 
 
-<font style="color:rgb(16, 24, 40);"></font>
 
-<font style="color:rgb(16, 24, 40);">The following will introduce how to configure and an example demonstration.</font>
 
-### <font style="color:rgb(16, 24, 40);">1. Apply for DataFocus Token</font>
-<font style="color:rgb(16, 24, 40);">If you don't have the DataFocus application yet, please apply for one on the</font><font style="color:rgb(16, 24, 40);"> </font>[<font style="color:rgb(21, 90, 239);">DataFocus Website</font>](https://www.datafocus.ai/en)<font style="color:rgb(16, 24, 40);">.  
-</font><font style="color:rgb(16, 24, 40);">Log in to your DataFocus application. Click</font><font style="color:rgb(16, 24, 40);"> </font>**<font style="color:rgb(16, 24, 40);">Admin</font>**<font style="color:rgb(16, 24, 40);"> </font><font style="color:rgb(16, 24, 40);">></font><font style="color:rgb(16, 24, 40);"> </font>**<font style="color:rgb(16, 24, 40);">Interface Authentication</font>**<font style="color:rgb(16, 24, 40);"> </font><font style="color:rgb(16, 24, 40);">></font><font style="color:rgb(16, 24, 40);"> </font>**<font style="color:rgb(16, 24, 40);">Bearer Token</font>**<font style="color:rgb(16, 24, 40);"> </font><font style="color:rgb(16, 24, 40);">></font><font style="color:rgb(16, 24, 40);"> </font>**<font style="color:rgb(16, 24, 40);">New Bearer Token</font>**<font style="color:rgb(16, 24, 40);">, to create a new token and get</font><font style="color:rgb(16, 24, 40);"> </font>_<font style="color:rgb(16, 24, 40);">the token value</font>_<font style="color:rgb(16, 24, 40);">.  
-</font>
+The following will introduce how to configure and an example demonstration.
+
+### 1. Apply for DataFocus Token
+If you don't have the DataFocus application yet, please apply for one on the [DataFocus Website](https://www.datafocus.ai/en).  
+Log in to your DataFocus application. Click **Admin** > **Interface Authentication** > **Bearer Token** > **New Bearer Token**, to create a new token and get _the token value_.  
+
 
 ![](https://cdn.nlark.com/yuque/0/2025/png/28274763/1744714560311-eebf7fed-41f1-46dc-8121-b3401ed97af3.png)
 
   
 If you have a DataFocus private deployment environment, you can get Token on your own environment.
 
-### <font style="color:rgb(16, 24, 40);">2. Fill in the configuration in Dify</font>
-<font style="color:rgb(16, 24, 40);">Install DataFocus from Marketplace and fill </font>**<font style="color:rgb(16, 24, 40);">token</font>**<font style="color:rgb(16, 24, 40);"> and </font>**<font style="color:rgb(16, 24, 40);">host</font>**<font style="color:rgb(16, 24, 40);"> in the authorization page.Token is the value obtained in the previous step.If you have a DataFocus private deployment environment, host is your environment host. Otherwise, the SAAS environment address can be used by default.</font>
+### 2. Fill in the configuration in Dify
+Install DataFocus from Marketplace and fill **token** and **host** in the authorization page.Token is the value obtained in the previous step.If you have a DataFocus private deployment environment, host is your environment host. Otherwise, the SAAS environment address can be used by default.
 
-### <font style="color:rgb(16, 24, 40);">3. Use the tool</font>
-<font style="color:rgb(16, 24, 40);">DataFocus includes two tools, FocusSQL and FocusGPT.</font>
+### 3. Use the tool
+DataFocus includes two tools, FocusSQL and FocusGPT.
 
-#### <font style="color:rgb(16, 24, 40);">FocusSQL</font>
-<font style="color:rgb(16, 24, 40);">FocusSQL is a natural language to SQL plugin based on keyword parsing.  
-</font>
+#### FocusSQL
+FocusSQL is a natural language to SQL plugin based on keyword parsing.  
+
 
 ![](https://cdn.nlark.com/yuque/0/2025/png/28274763/1744714560721-d4fe3afb-7df1-485a-8e19-d88ecd9a7ddd.png)
 
-##### <font style="color:rgb(16, 24, 40);">Output Variable JSON</font>
-| **<font style="color:rgb(103, 111, 131);">Name</font>** | **<font style="color:rgb(103, 111, 131);">Type</font>** | **<font style="color:rgb(103, 111, 131);">Description</font>** |
+##### Output Variable JSON
+| **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <font style="color:rgb(53, 64, 82);">content</font> | <font style="color:rgb(53, 64, 82);">string</font> | <font style="color:rgb(53, 64, 82);">Generated SQL statements</font> |
-| <font style="color:rgb(53, 64, 82);">question</font> | <font style="color:rgb(53, 64, 82);">string</font> | <font style="color:rgb(53, 64, 82);">Generated keywords</font> |
-| <font style="color:rgb(53, 64, 82);">type</font> | <font style="color:rgb(53, 64, 82);">string</font> | <font style="color:rgb(53, 64, 82);">Return type</font> |
+| content | string | Generated SQL statements |
+| question | string | Generated keywords |
+| type | string | Return type |
 
 
-<font style="color:rgb(16, 24, 40);">Output Example</font>
+Output Example
 
 ```plain
 JSON
@@ -67,30 +67,30 @@ JSON
 5}
 ```
 
-#### <font style="color:rgb(16, 24, 40);">FocusGPT</font>
-<font style="color:rgb(16, 24, 40);">FocusGPT is an intelligent query plugin that supports multiple rounds of conversations, which allow you query data from your database.  
-</font><font style="color:rgb(16, 24, 40);">FocusGPT not only can return query SQL but also return query result to you.  
-</font>
+#### FocusGPT
+FocusGPT is an intelligent query plugin that supports multiple rounds of conversations, which allow you query data from your database.  
+FocusGPT not only can return query SQL but also return query result to you.  
+
 
 ![](https://cdn.nlark.com/yuque/0/2025/png/28274763/1744714560442-f54ee0cb-561e-43d4-8bce-17645f2b1a4e.png)
 
-##### <font style="color:rgb(16, 24, 40);">Output Variable JSON</font>
-| **<font style="color:rgb(103, 111, 131);">name</font>** | **<font style="color:rgb(103, 111, 131);">type</font>** | **<font style="color:rgb(103, 111, 131);">Description</font>** |
+##### Output Variable JSON
+| **name** | **type** | **Description** |
 | --- | --- | --- |
-| <font style="color:rgb(53, 64, 82);">code</font> | <font style="color:rgb(53, 64, 82);">number</font> | <font style="color:#000000;">Status code</font> |
-| <font style="color:rgb(53, 64, 82);">columns</font> | <font style="color:rgb(53, 64, 82);">[[object]]</font> | <font style="color:#000000;">Two-dimensional array storing query results</font> |
-| <font style="color:rgb(53, 64, 82);">count</font> | <font style="color:rgb(53, 64, 82);">number</font> | <font style="color:#000000;">Number of rows returned</font> |
-| <font style="color:rgb(53, 64, 82);">duration</font> | <font style="color:rgb(53, 64, 82);">string</font> | <font style="color:#000000;">Query execution time, in seconds (s)</font> |
-| <font style="color:rgb(53, 64, 82);">headers</font> | <font style="color:rgb(53, 64, 82);">[object]</font> | <font style="color:#000000;">Column header information for the two-dimensional array columns</font> |
-| <font style="color:rgb(53, 64, 82);">» display</font> | <font style="color:rgb(53, 64, 82);">string</font> | <font style="color:#000000;">Display name of the column header</font> |
-| <font style="color:rgb(53, 64, 82);">» name</font> | <font style="color:rgb(53, 64, 82);">string</font> | <font style="color:#000000;">Original column name of the header</font> |
-| <font style="color:rgb(53, 64, 82);">» suf</font> | <font style="color:rgb(53, 64, 82);">string</font> | <font style="color:#000000;">Prefix of the column header, indicating aggregation method</font> |
-| <font style="color:rgb(53, 64, 82);">sql</font> | <font style="color:rgb(53, 64, 82);">[object]</font> | <font style="color:#000000;">SQL corresponding to the query data</font> |
-| <font style="color:rgb(53, 64, 82);">»select_clause</font> | <font style="color:rgb(53, 64, 82);">string</font> | <font style="color:#000000;">SQL corresponding to the query data</font> |
-| <font style="color:rgb(53, 64, 82);">title</font> | <font style="color:rgb(53, 64, 82);">string</font> | <font style="color:#000000;">Keywords generated from parsing</font> |
+| code | number | Status code |
+| columns | [[object]] | Two-dimensional array storing query results |
+| count | number | Number of rows returned |
+| duration | string | Query execution time, in seconds (s) |
+| headers | [object] | Column header information for the two-dimensional array columns |
+| » display | string | Display name of the column header |
+| » name | string | Original column name of the header |
+| » suf | string | Prefix of the column header, indicating aggregation method |
+| sql | [object] | SQL corresponding to the query data |
+| »select_clause | string | SQL corresponding to the query data |
+| title | string | Keywords generated from parsing |
 
 
-<font style="color:rgb(16, 24, 40);">Output Example</font>
+Output Example
 
 ```plain
 JSON
@@ -143,100 +143,100 @@ JSON
 44}
 ```
 
-#### <font style="color:rgb(16, 24, 40);">Configuration</font>
-<font style="color:rgb(16, 24, 40);">FocusSQL and FocusGPT have similar configuration. Below are the functions and usage instructions of each parameter</font>
+#### Configuration
+FocusSQL and FocusGPT have similar configuration. Below are the functions and usage instructions of each parameter
 
-| **<font style="color:rgb(103, 111, 131);">Parameter</font>** | **<font style="color:rgb(103, 111, 131);">Description</font>** |
+| **Parameter** | **Description** |
 | --- | --- |
-| <font style="color:rgb(53, 64, 82);">Language</font> | <font style="color:rgb(53, 64, 82);">Language environment, only support</font><font style="color:rgb(53, 64, 82);"> </font>_<font style="color:rgb(53, 64, 82);">Chinese</font>_<font style="color:rgb(53, 64, 82);"> </font><font style="color:rgb(53, 64, 82);">and</font><font style="color:rgb(53, 64, 82);"> </font>_<font style="color:rgb(53, 64, 82);">English</font>_ |
-| <font style="color:rgb(53, 64, 82);">Query Statement</font> | <font style="color:rgb(53, 64, 82);">Natural language input by users</font> |
-| <font style="color:rgb(53, 64, 82);">Table Name</font> | <font style="color:rgb(53, 64, 82);">Target data table for query</font> |
-| <font style="color:rgb(53, 64, 82);">Data Model</font> | <font style="color:rgb(53, 64, 82);">Custom model parameter entry</font> |
-| <font style="color:rgb(53, 64, 82);">Output SQL Type</font> | <font style="color:rgb(53, 64, 82);">Output SQL Type</font> |
-| <font style="color:rgb(53, 64, 82);">Conversation Id</font> | <font style="color:rgb(53, 64, 82);">Unique identifier of the session, which allow tool identify and maintain session state</font> |
-| <font style="color:rgb(53, 64, 82);">Action</font> | <font style="color:rgb(53, 64, 82);">The behavior of tool execution currently includes two types: obtaining table lists and dialogues</font> |
-| <font style="color:rgb(53, 64, 82);">Datasource Type</font> | <font style="color:rgb(53, 64, 82);">Types of external data sources connected. If datasource type was selected, the connection parameters below need to be filled in</font> |
-| <font style="color:rgb(53, 64, 82);">Host</font> | <font style="color:rgb(53, 64, 82);">host</font> |
-| <font style="color:rgb(53, 64, 82);">Port</font> | <font style="color:rgb(53, 64, 82);">port</font> |
-| <font style="color:rgb(53, 64, 82);">DB user</font> | <font style="color:rgb(53, 64, 82);">user</font> |
-| <font style="color:rgb(53, 64, 82);">DB Password</font> | <font style="color:rgb(53, 64, 82);">password</font> |
-| <font style="color:rgb(53, 64, 82);">Database Name</font> | <font style="color:rgb(53, 64, 82);">database name</font> |
-| <font style="color:rgb(53, 64, 82);">JDBC</font> | <font style="color:rgb(53, 64, 82);">JDBC</font> |
-| <font style="color:rgb(53, 64, 82);">Schema</font> | <font style="color:rgb(53, 64, 82);">Schema name</font> |
+| Language | Language environment, only support _Chinese_ and _English_ |
+| Query Statement | Natural language input by users |
+| Table Name | Target data table for query |
+| Data Model | Custom model parameter entry |
+| Output SQL Type | Output SQL Type |
+| Conversation Id | Unique identifier of the session, which allow tool identify and maintain session state |
+| Action | The behavior of tool execution currently includes two types: obtaining table lists and dialogues |
+| Datasource Type | Types of external data sources connected. If datasource type was selected, the connection parameters below need to be filled in |
+| Host | host |
+| Port | port |
+| DB user | user |
+| DB Password | password |
+| Database Name | database name |
+| JDBC | JDBC |
+| Schema | Schema name |
 
 
-#### <font style="color:rgb(16, 24, 40);">Model Parameters</font>
-<font style="color:rgb(16, 24, 40);">The data model needs to pass in a JSON string, and the structure of the model is as follows</font>
+#### Model Parameters
+The data model needs to pass in a JSON string, and the structure of the model is as follows
 
-##### <font style="color:rgb(16, 24, 40);">Structure</font>
-| **<font style="color:rgb(103, 111, 131);">Name</font>** | **<font style="color:rgb(103, 111, 131);">Type</font>** | **<font style="color:rgb(103, 111, 131);">Required</font>** | **<font style="color:rgb(103, 111, 131);">Description</font>** |
+##### Structure
+| **Name** | **Type** | **Required** | **Description** |
 | --- | --- | --- | --- |
-| <font style="color:rgb(53, 64, 82);">type</font> | <font style="color:rgb(53, 64, 82);">string</font> | <font style="color:rgb(53, 64, 82);">Yes</font> | <font style="color:rgb(53, 64, 82);">Database type</font> |
-| <font style="color:rgb(53, 64, 82);">version</font> | <font style="color:rgb(53, 64, 82);">string</font> | <font style="color:rgb(53, 64, 82);">Yes</font> | <font style="color:rgb(53, 64, 82);">Database version, eg: 8.0</font> |
-| <font style="color:rgb(53, 64, 82);">tables</font> | <font style="color:rgb(53, 64, 82);">[object]</font> | <font style="color:rgb(53, 64, 82);">Yes</font> | <font style="color:rgb(53, 64, 82);">Table structure list</font> |
-| <font style="color:rgb(53, 64, 82);">» tableDisplayName</font> | <font style="color:rgb(53, 64, 82);">string</font> | <font style="color:rgb(53, 64, 82);">No</font> | <font style="color:rgb(53, 64, 82);">Table display name</font> |
-| <font style="color:rgb(53, 64, 82);">» tableName</font> | <font style="color:rgb(53, 64, 82);">string</font> | <font style="color:rgb(53, 64, 82);">No</font> | <font style="color:rgb(53, 64, 82);">Original table name</font> |
-| <font style="color:rgb(53, 64, 82);">» columns</font> | <font style="color:rgb(53, 64, 82);">[object]</font> | <font style="color:rgb(53, 64, 82);">No</font> | <font style="color:rgb(53, 64, 82);">Columns structure list</font> |
-| <font style="color:rgb(53, 64, 82);">»» columnDisplayName</font> | <font style="color:rgb(53, 64, 82);">string</font> | <font style="color:rgb(53, 64, 82);">Yes</font> | <font style="color:rgb(53, 64, 82);">Column display name</font> |
-| <font style="color:rgb(53, 64, 82);">»» columnName</font> | <font style="color:rgb(53, 64, 82);">string</font> | <font style="color:rgb(53, 64, 82);">Yes</font> | <font style="color:rgb(53, 64, 82);">Original column name</font> |
-| <font style="color:rgb(53, 64, 82);">»» dataType</font> | <font style="color:rgb(53, 64, 82);">string</font> | <font style="color:rgb(53, 64, 82);">Yes</font> | <font style="color:rgb(53, 64, 82);">Column data type</font> |
-| <font style="color:rgb(53, 64, 82);">»» aggregation</font> | <font style="color:rgb(53, 64, 82);">string</font> | <font style="color:rgb(53, 64, 82);">Yes</font> | <font style="color:rgb(53, 64, 82);">Column default aggregation</font> |
-| <font style="color:rgb(53, 64, 82);">relations</font> | <font style="color:rgb(53, 64, 82);">[object]</font> | <font style="color:rgb(53, 64, 82);">Yes</font> | <font style="color:rgb(53, 64, 82);">Association relationship list</font> |
-| <font style="color:rgb(53, 64, 82);">» conditions</font> | <font style="color:rgb(53, 64, 82);">[object]</font> | <font style="color:rgb(53, 64, 82);">No</font> | <font style="color:rgb(53, 64, 82);">Associated conditions</font> |
-| <font style="color:rgb(53, 64, 82);">»» dstColName</font> | <font style="color:rgb(53, 64, 82);">string</font> | <font style="color:rgb(53, 64, 82);">No</font> | <font style="color:rgb(53, 64, 82);">Dimension original column name</font> |
-| <font style="color:rgb(53, 64, 82);">»» srcColName</font> | <font style="color:rgb(53, 64, 82);">string</font> | <font style="color:rgb(53, 64, 82);">No</font> | <font style="color:rgb(53, 64, 82);">Fact original column name</font> |
-| <font style="color:rgb(53, 64, 82);">» dimensionTable</font> | <font style="color:rgb(53, 64, 82);">string</font> | <font style="color:rgb(53, 64, 82);">No</font> | <font style="color:rgb(53, 64, 82);">Dimension original table name</font> |
-| <font style="color:rgb(53, 64, 82);">» factTable</font> | <font style="color:rgb(53, 64, 82);">string</font> | <font style="color:rgb(53, 64, 82);">No</font> | <font style="color:rgb(53, 64, 82);">Fact original table name</font> |
-| <font style="color:rgb(53, 64, 82);">» joinType</font> | <font style="color:rgb(53, 64, 82);">string</font> | <font style="color:rgb(53, 64, 82);">No</font> | <font style="color:rgb(53, 64, 82);">Association type</font> |
+| type | string | Yes | Database type |
+| version | string | Yes | Database version, eg: 8.0 |
+| tables | [object] | Yes | Table structure list |
+| » tableDisplayName | string | No | Table display name |
+| » tableName | string | No | Original table name |
+| » columns | [object] | No | Columns structure list |
+| »» columnDisplayName | string | Yes | Column display name |
+| »» columnName | string | Yes | Original column name |
+| »» dataType | string | Yes | Column data type |
+| »» aggregation | string | Yes | Column default aggregation |
+| relations | [object] | Yes | Association relationship list |
+| » conditions | [object] | No | Associated conditions |
+| »» dstColName | string | No | Dimension original column name |
+| »» srcColName | string | No | Fact original column name |
+| » dimensionTable | string | No | Dimension original table name |
+| » factTable | string | No | Fact original table name |
+| » joinType | string | No | Association type |
 
 
-##### <font style="color:rgb(16, 24, 40);">Parameter values</font>
-###### <font style="color:rgb(16, 24, 40);">type</font>
-| **<font style="color:rgb(103, 111, 131);">DataBase</font>** | **<font style="color:rgb(103, 111, 131);">Value</font>** |
+##### Parameter values
+###### type
+| **DataBase** | **Value** |
 | --- | --- |
-| <font style="color:rgb(53, 64, 82);">MySQL</font> | <font style="color:rgb(53, 64, 82);">mysql</font> |
-| <font style="color:rgb(53, 64, 82);">ClickHouse</font> | <font style="color:rgb(53, 64, 82);">clickhouse</font> |
-| <font style="color:rgb(53, 64, 82);">Impala</font> | <font style="color:rgb(53, 64, 82);">impala</font> |
+| MySQL | mysql |
+| ClickHouse | clickhouse |
+| Impala | impala |
 
 
-###### <font style="color:rgb(16, 24, 40);">dataType</font>
-| **<font style="color:rgb(103, 111, 131);">DataType</font>** | **<font style="color:rgb(103, 111, 131);">Value</font>** |
+###### dataType
+| **DataType** | **Value** |
 | --- | --- |
-| <font style="color:rgb(53, 64, 82);">Boolean</font> | <font style="color:rgb(53, 64, 82);">boolean</font> |
-| <font style="color:rgb(53, 64, 82);">Integer</font> | <font style="color:rgb(53, 64, 82);">int</font> |
-| <font style="color:rgb(53, 64, 82);">Long integer</font> | <font style="color:rgb(53, 64, 82);">bigint</font> |
-| <font style="color:rgb(53, 64, 82);">Float</font> | <font style="color:rgb(53, 64, 82);">double</font> |
-| <font style="color:rgb(53, 64, 82);">String</font> | <font style="color:rgb(53, 64, 82);">string</font> |
-| <font style="color:rgb(53, 64, 82);">Timestamp</font> | <font style="color:rgb(53, 64, 82);">timestamp</font> |
-| <font style="color:rgb(53, 64, 82);">Date type</font> | <font style="color:rgb(53, 64, 82);">date</font> |
-| <font style="color:rgb(53, 64, 82);">Time type</font> | <font style="color:rgb(53, 64, 82);">time</font> |
+| Boolean | boolean |
+| Integer | int |
+| Long integer | bigint |
+| Float | double |
+| String | string |
+| Timestamp | timestamp |
+| Date type | date |
+| Time type | time |
 
 
-###### <font style="color:rgb(16, 24, 40);">aggregation</font>
-| **<font style="color:rgb(103, 111, 131);">Aggregation</font>** | **<font style="color:rgb(103, 111, 131);">Value</font>** |
+###### aggregation
+| **Aggregation** | **Value** |
 | --- | --- |
-| <font style="color:rgb(53, 64, 82);">Sum</font> | <font style="color:rgb(53, 64, 82);">SUM</font> |
-| <font style="color:rgb(53, 64, 82);">Mean</font> | <font style="color:rgb(53, 64, 82);">AVERAGE</font> |
-| <font style="color:rgb(53, 64, 82);">Min</font> | <font style="color:rgb(53, 64, 82);">MIN</font> |
-| <font style="color:rgb(53, 64, 82);">Max</font> | <font style="color:rgb(53, 64, 82);">MAX</font> |
-| <font style="color:rgb(53, 64, 82);">Count</font> | <font style="color:rgb(53, 64, 82);">COUNT</font> |
-| <font style="color:rgb(53, 64, 82);">Number of deduplicates</font> | <font style="color:rgb(53, 64, 82);">COUNT_DISTINCT</font> |
-| <font style="color:rgb(53, 64, 82);">Variance</font> | <font style="color:rgb(53, 64, 82);">VARIANCE</font> |
-| <font style="color:rgb(53, 64, 82);">Standard deviation</font> | <font style="color:rgb(53, 64, 82);">STD_DEVIATION</font> |
-| <font style="color:rgb(53, 64, 82);">None</font> | <font style="color:rgb(53, 64, 82);">NONE</font> |
+| Sum | SUM |
+| Mean | AVERAGE |
+| Min | MIN |
+| Max | MAX |
+| Count | COUNT |
+| Number of deduplicates | COUNT_DISTINCT |
+| Variance | VARIANCE |
+| Standard deviation | STD_DEVIATION |
+| None | NONE |
 
 
-###### <font style="color:rgb(16, 24, 40);">joinType</font>
-| **<font style="color:rgb(103, 111, 131);">Assocation</font>** | **<font style="color:rgb(103, 111, 131);">Value</font>** |
+###### joinType
+| **Assocation** | **Value** |
 | --- | --- |
-| <font style="color:rgb(53, 64, 82);">Left association</font> | <font style="color:rgb(53, 64, 82);">LEFT JOIN</font> |
-| <font style="color:rgb(53, 64, 82);">Right association</font> | <font style="color:rgb(53, 64, 82);">RIGHT JOIN</font> |
-| <font style="color:rgb(53, 64, 82);">Internal</font> | <font style="color:rgb(53, 64, 82);">INNER JOIN</font> |
-| <font style="color:rgb(53, 64, 82);">Fully associative</font> | <font style="color:rgb(53, 64, 82);">FULL JOIN</font> |
+| Left association | LEFT JOIN |
+| Right association | RIGHT JOIN |
+| Internal | INNER JOIN |
+| Fully associative | FULL JOIN |
 
 
-##### <font style="color:rgb(16, 24, 40);">Example</font>
-<font style="color:rgb(16, 24, 40);">model</font>
+##### Example
+model
 
 ```plain
 JSON
@@ -276,7 +276,7 @@ JSON
 31}
 ```
 
-### <font style="color:rgb(16, 24, 40);">Consult</font>
+### Consult
 [DataFocus Discord](https://discord.com/invite/AVufPnpaad)
 
 ## 中文
