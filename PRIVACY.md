@@ -2,24 +2,24 @@
 
 ------
 
-## 插件依赖说明
+## Plugin Dependency Description
 
-本插件必须配合DataFocus产品使用，请注意：
+This plugin must be used in conjunction with the DataFocus product. Please note the following:
 
-- 需要拥有DataFocus SAAS环境账号或本地部署环境
-- DataFocus未开源，无法验证内部实现
-- DataFocus 协议详情请见 [《DataFocus用户注册协议》](https://www.datafocus.ai/user-registration-agreement) 
+- You need to have an account in the DataFocus SaaS environment or a local deployment environment.
+- DataFocus is not open-source, and its internal implementation cannot be verified.
+- For details on the DataFocus agreement, please refer to the [DataFocus User Registration Agreement](https://www.datafocus.ai/user-registration-agreement).
 
-### 插件可能会收集
+### Data That the Plugin May Collect
 
-- DataFocus承载令牌
-- 收发消息内容
-- 设备信息（IP、设备型号等）
-- 数据源连接信息
+- DataFocus bearer token
+- Content of messages sent and received
+- Device information (IP address, device model, etc.)
+- Data source connection information
 
-### 插件如何使用数据
+### How the Plugin Uses the Data
 
-- 本地存储SessionId信息
-- 本地存储数据源连接信息
-- 不收集使用行为数据
-- 依赖的DataFocus服务端可能收集上述信息
+- Stores SessionId information locally
+- Stores data source connection information locally
+- Does not collect usage behavior data
+- The DataFocus server that the plugin depends on may collect the above information.
